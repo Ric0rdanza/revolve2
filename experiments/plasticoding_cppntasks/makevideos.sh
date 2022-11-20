@@ -1,6 +1,7 @@
 
-study="plasticoding_seasons"
-mainpath="/storage/karine"
+study="plasticoding_cppntasks"
+#mainpath="/home/chen/Documents/storage/ec22zhengtianshi/"
+mainpath="/storage/ec22zhengtianshi/"
 file="${mainpath}/${study}/analysis/video_bests.mpg";
 
 printf " \n making video..."

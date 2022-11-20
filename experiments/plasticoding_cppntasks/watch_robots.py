@@ -30,20 +30,22 @@ class Simulator:
 
         self.study = 'plasticoding_cppntasks'
         # REMEMBER to also change order by down there!!!!
+        #self.experiments_name = ["fullplasticforthright"]
         self.experiments_name = ["fullplasticforthright"]
-        self.runs = [7]#list(range(1, 10+1))
+        self.runs = [1]#list(range(1, 10+1))
         self.generations = [100]
         self.bests = 1
         # 'all' selects best from all individuals
         # 'gens' selects best from chosen generations
         self.bests_type = 'gens'
-        mainpath = "karine"
+        mainpath = "ec22zhengtianshi"
 
         for experiment_name in self.experiments_name:
             print('\n', experiment_name)
             for run in self.runs:
                 print('\n run: ', run)
 
+                #path = f'/home/chen/Documents/storage/{mainpath}/{self.study}'
                 path = f'/storage/{mainpath}/{self.study}'
 
                 db = open_async_database_sqlite(f'{path}/{experiment_name}/run_{run}')

@@ -16,7 +16,7 @@ async def main() -> None:
 
     args = Config()._get_params()
 
-    mainpath = "karine"
+    mainpath = "ec22zhengtianshi"
 
     logging.basicConfig(
         level=logging.INFO,
@@ -37,6 +37,7 @@ async def main() -> None:
     rng.seed(random())
 
     # database
+    #database = open_async_database_sqlite(f'/home/chen/Documents/storage/{mainpath}/{args.study_name}/{args.experiment_name}/run_{args.run}')
     database = open_async_database_sqlite(f'/storage/{mainpath}/{args.study_name}/{args.experiment_name}/run_{args.run}')
 
     # process id generator
