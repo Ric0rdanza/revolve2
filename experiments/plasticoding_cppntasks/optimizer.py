@@ -208,8 +208,8 @@ class Optimizer(EAOptimizer[Genotype, float]):
     def _init_runner(self) -> None:
         self._runner = {}
         for env in self.env_conditions:
-            #self._runner[env] = (LocalRunner(LocalRunner.SimParams(), headless=True, env_conditions=self.env_conditions[env]))
-            self._runner[env] = (LocalRunner(LocalRunner.SimParams(), headless=False, env_conditions=self.env_conditions[env]))
+            self._runner[env] = (LocalRunner(LocalRunner.SimParams(), headless=True, env_conditions=self.env_conditions[env]))
+            #self._runner[env] = (LocalRunner(LocalRunner.SimParams(), headless=False, env_conditions=self.env_conditions[env]))
 
     def _select_parents(
         self,
