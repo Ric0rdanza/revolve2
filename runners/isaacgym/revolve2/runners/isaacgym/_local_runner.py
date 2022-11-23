@@ -7,7 +7,7 @@ from typing import List, Optional
 
 import colored
 import numpy as np
-from isaacgym import gymapi
+from isaacgym import gymapi, gymutil
 from pyrr import Quaternion, Vector3
 
 from revolve2.core.physics.actor import Actor
@@ -21,6 +21,8 @@ from revolve2.core.physics.running import (
     EnvironmentState,
     Runner,
 )
+
+from isaacgym.terrain_utils import *
 
 
 class LocalRunner(Runner):
@@ -82,24 +84,52 @@ class LocalRunner(Runner):
         def _create_envs(self) -> List[GymEnv]:
             gymenvs: List[LocalRunner._Simulator.GymEnv] = []
 
+
+            terrain_width = 3.
+            terrain_length = 6.
+            horizontal_scale = 0.25  # [m]
+            vertical_scale = 0.005  # [m]
+            num_rows = int(terrain_width/horizontal_scale)
+            num_cols = int(terrain_length/horizontal_scale)
+            heightfield = np.zeros((num_rows, num_cols), dtype=np.int16)
+
+            def new_sub_terrain(): return SubTerrain(width=num_rows, length=num_cols, vertical_scale=vertical_scale, horizontal_scale=horizontal_scale)
+            
+            heightfield[0:num_rows, :] = random_uniform_terrain(new_sub_terrain(), min_height=-0.01, max_height=0.01, step=0.15, downsampled_scale=0.1).height_field_raw
+            
+            vertices, triangles = convert_heightfield_to_trimesh(heightfield, horizontal_scale=horizontal_scale, vertical_scale=vertical_scale, slope_threshold=1.5)
+            tm_params = gymapi.TriangleMeshParams()
+            tm_params.nb_vertices = vertices.shape[0]
+            tm_params.nb_triangles = triangles.shape[0]
+            tm_params.transform.p.x = -1.
+            tm_params.transform.p.y = -1.
+            self._gym.add_triangle_mesh(self._sim, vertices.flatten(), triangles.flatten(), tm_params)
+
+
+
+
             # TODO this is only temporary. When we switch to the new isaac sim it should be easily possible to
             # let the user create static object, rendering the group plane redundant.
             # But for now we keep it because it's easy for our first test release.
-            plane_params = gymapi.PlaneParams()
+            
+            #plane_params = gymapi.PlaneParams()
+            
             static_friction, dynamic_friction, y_rotation_degrees, platform, toxic = self._env_conditions
             y_rotation_degrees = float(y_rotation_degrees)
             static_friction = float(static_friction)
             dynamic_friction = float(dynamic_friction)
             # adds (possible) rotation to the y-axis
             # ps: because camera is also rotated, we see the hill raising from the center to the right of the screen
-            plane_params.normal = gymapi.Vec3(0.0,
-                                              -np.sin(y_rotation_degrees*np.pi/180),
-                                              np.cos(y_rotation_degrees*np.pi/180))
-            plane_params.distance = 0
-            plane_params.static_friction = static_friction
-            plane_params.dynamic_friction = dynamic_friction
-            plane_params.restitution = 0
-            self._gym.add_ground(self._sim, plane_params)
+            
+            #plane_params.normal = gymapi.Vec3(0.0,
+            #                                  -np.sin(y_rotation_degrees*np.pi/180),
+            #                                  np.cos(y_rotation_degrees*np.pi/180))
+            
+            #plane_params.distance = 0
+            #plane_params.static_friction = static_friction
+            #plane_params.dynamic_friction = dynamic_friction
+            #plane_params.restitution = 0
+            #self._gym.add_ground(self._sim, plane_params)
 
             num_per_row = int(math.sqrt(len(self._batch.environments)))
 
@@ -114,7 +144,9 @@ class LocalRunner(Runner):
                 gymenv = self.GymEnv(env, [])
                 gymenvs.append(gymenv)
 
+
                 # add platform to env
+                '''
                 if int(platform) == 1:
                     sizex = 6.0
                     sizey = 2.0
@@ -122,15 +154,18 @@ class LocalRunner(Runner):
                     platform_height_adjust = sizez/2.0
                     platform_asset = self._gym.create_box(self._sim, sizex, sizey, sizez)
                     pose = gymapi.Transform()
+                    #pose.p = gymapi.Vec3(0,  0,   platform_height_adjust, )
                     pose.p = gymapi.Vec3(0,  0,   platform_height_adjust, )
                     pose.r = gymapi.Quat(0, 0, 0, 1)
                     plat1_handle = self._gym.create_actor(env, platform_asset, pose, "plat", env_index, 1)
                     pose = gymapi.Transform()
-                    pose.p = gymapi.Vec3(0, sizey, platform_height_adjust, )
+                    #pose.p = gymapi.Vec3(0, sizey, platform_height_adjust, )
+                    pose.p = gymapi.Vec3(0, sizey,   platform_height_adjust, )
                     pose.r = gymapi.Quat(0, 0, 0, 1)
                     plat2_handle = self._gym.create_actor(env, platform_asset, pose, "plat2", env_index, 1)
                     self._gym.set_rigid_body_color(env, plat1_handle, 0, gymapi.MESH_VISUAL, gymapi.Vec3(0.1, 0.1, 0.1))
                     self._gym.set_rigid_body_color(env, plat2_handle, 0, gymapi.MESH_VISUAL, gymapi.Vec3(0, 1, 0))
+                '''
 
                 for actor_index, posed_actor in enumerate(env_descr.actors):
                     # sadly isaac gym can only read robot descriptions from a file,

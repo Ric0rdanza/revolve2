@@ -33,7 +33,7 @@ class Simulator:
         #self.experiments_name = ["fullplasticforthright"]
         self.experiments_name = ["onlyforth"]
         self.runs = [1]#list(range(1, 10+1))
-        self.generations = [100]
+        self.generations = [10]
         self.bests = 10
         # 'all' selects best from all individuals
         # 'gens' selects best from chosen generations
