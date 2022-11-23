@@ -84,6 +84,12 @@ class LocalRunner(Runner):
         def _create_envs(self) -> List[GymEnv]:
             gymenvs: List[LocalRunner._Simulator.GymEnv] = []
 
+            static_friction, dynamic_friction, y_rotation_degrees, platform, playground = self._env_conditions
+            y_rotation_degrees = float(y_rotation_degrees)
+            static_friction = float(static_friction)
+            dynamic_friction = float(dynamic_friction)
+
+            print(static_friction, dynamic_friction, y_rotation_degrees, platform, playground)
 
             terrain_width = 3.
             terrain_length = 6.
@@ -96,30 +102,32 @@ class LocalRunner(Runner):
             def new_sub_terrain(): return SubTerrain(width=num_rows, length=num_cols, vertical_scale=vertical_scale, horizontal_scale=horizontal_scale)
             
             # Rugged terrain
-            heightfield[0:num_rows, :] = random_uniform_terrain(new_sub_terrain(), min_height=-0.01, max_height=0.01, step=0.15, downsampled_scale=0.1).height_field_raw
+            if playground == "0":
+                heightfield[0:num_rows, :] = random_uniform_terrain(new_sub_terrain(), min_height=-0.01, max_height=0.01, step=0.15, downsampled_scale=0.1).height_field_raw
             
-            # Define the tilted terrain (modified from the sloped_terrain)
-            def tilted_terrain(terrain, slope=1):
-                """
-                Generate a sloped terrain
+            elif playground == "1":
+                # Define the tilted terrain (modified from the sloped_terrain)
+                def tilted_terrain(terrain, slope=1):
+                    """
+                    Generate a sloped terrain
 
-                Parameters:
-                    terrain (SubTerrain): the terrain
-                    slope (int): positive or negative slope
-                Returns:
-                    terrain (SubTerrain): update terrain
-                """
+                    Parameters:
+                        terrain (SubTerrain): the terrain
+                        slope (int): positive or negative slope
+                    Returns:
+                        terrain (SubTerrain): update terrain
+                    """
 
-                x = np.arange(0, terrain.width)
-                y = np.arange(0, terrain.length)
-                xx, yy = np.meshgrid(x, y, sparse=True)
-                yy = yy.reshape(1, terrain.length)
-                max_height = int(slope * (terrain.horizontal_scale / terrain.vertical_scale) * terrain.length)
-                terrain.height_field_raw[np.arange(terrain.width), :] += (max_height * yy / terrain.length).astype(terrain.height_field_raw.dtype)
-                return terrain
+                    x = np.arange(0, terrain.width)
+                    y = np.arange(0, terrain.length)
+                    xx, yy = np.meshgrid(x, y, sparse=True)
+                    yy = yy.reshape(1, terrain.length)
+                    max_height = int(slope * (terrain.horizontal_scale / terrain.vertical_scale) * terrain.length)
+                    terrain.height_field_raw[np.arange(terrain.width), :] += (max_height * yy / terrain.length).astype(terrain.height_field_raw.dtype)
+                    return terrain
 
-            # tilted terrain
-            #heightfield[0: num_rows, :] = tilted_terrain(new_sub_terrain(), slope = 0.10).height_field_raw
+                # tilted terrain
+                heightfield[0: num_rows, :] = tilted_terrain(new_sub_terrain(), slope = 0.10).height_field_raw
 
 
             vertices, triangles = convert_heightfield_to_trimesh(heightfield, horizontal_scale=horizontal_scale, vertical_scale=vertical_scale, slope_threshold=1.5)
@@ -139,10 +147,7 @@ class LocalRunner(Runner):
             
             #plane_params = gymapi.PlaneParams()
             
-            static_friction, dynamic_friction, y_rotation_degrees, platform, toxic = self._env_conditions
-            y_rotation_degrees = float(y_rotation_degrees)
-            static_friction = float(static_friction)
-            dynamic_friction = float(dynamic_friction)
+            
             # adds (possible) rotation to the y-axis
             # ps: because camera is also rotated, we see the hill raising from the center to the right of the screen
             

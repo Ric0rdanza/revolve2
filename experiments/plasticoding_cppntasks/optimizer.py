@@ -208,8 +208,8 @@ class Optimizer(EAOptimizer[Genotype, float]):
     def _init_runner(self) -> None:
         self._runner = {}
         for env in self.env_conditions:
-            self._runner[env] = (LocalRunner(LocalRunner.SimParams(), headless=True, env_conditions=self.env_conditions[env]))
-            #self._runner[env] = (LocalRunner(LocalRunner.SimParams(), headless=False, env_conditions=self.env_conditions[env]))
+            #self._runner[env] = (LocalRunner(LocalRunner.SimParams(), headless=True, env_conditions=self.env_conditions[env]))
+            self._runner[env] = (LocalRunner(LocalRunner.SimParams(), headless=False, env_conditions=self.env_conditions[env]))
 
     def _select_parents(
         self,
@@ -309,21 +309,38 @@ class Optimizer(EAOptimizer[Genotype, float]):
                 robot_rotation = x_rotation_degrees * np.pi / 180
                 platform = float(self.env_conditions[cond][3])
 
-                env.actors.append(
-                    PosedActor(
-                        actor,
-                        Vector3(
-                            [
-                                0.6,
-                                0.0,
-                                0.5,
-                                #(bounding_box.size.z / 2.0 - bounding_box.offset.z) + platform,
-                            ]
-                        ),
-                        Quaternion.from_eulers([robot_rotation, 0, 0]),
-                        [0.0 for _ in controller.get_dof_targets()],
+                if self._env_conditions[0][4] == "1":
+                    env.actors.append(
+                        PosedActor(
+                            actor,
+                            Vector3(
+                                [
+                                    0.6,
+                                    0.0,
+                                    0.3, # lower to prevent jumping
+                                    #(bounding_box.size.z / 2.0 - bounding_box.offset.z) + platform,
+                                ]
+                            ),
+                            Quaternion.from_eulers([robot_rotation, 0, 0]),
+                            [0.0 for _ in controller.get_dof_targets()],
+                        )
                     )
-                )
+                else:
+                    env.actors.append(
+                        PosedActor(
+                            actor,
+                            Vector3(
+                                [
+                                    0.6,
+                                    0.0,
+                                    0.4,
+                                    #(bounding_box.size.z / 2.0 - bounding_box.offset.z) + platform,
+                                ]
+                            ),
+                            Quaternion.from_eulers([robot_rotation, 0, 0]),
+                            [0.0 for _ in controller.get_dof_targets()],
+                        )
+                    )
                 batch.environments.append(env)
 
             envs_queried_substrates[cond] = queried_substrates

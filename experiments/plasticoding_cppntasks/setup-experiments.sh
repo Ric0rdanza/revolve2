@@ -14,23 +14,23 @@ study="plasticoding_cppntasks"
 #experiments=("nonplasticforthright" "plasticforthright" "nonplasticbackforth" "plasticbackforth" "fullplasticforthright" "fullplasticbackforth" "onlyforth")
 #population_size=(200 200 200 200 200 200 100)
 #offspring_size=(200 200 200 200 200 200 100)
-experiments=("onlyforth")
-population_size=(100)
-offspring_size=(100)
+experiments=("rugged" "tilted")
+population_size=(100 100)
+offspring_size=(100 100)
 num_generations="100"
 
 
 #fitness_measure=("forthright_dominated" "forthright_dominated" "backforth_dominated" "backforth_dominated" "forthright_dominated" "backforth_dominated" "speed_y" )
 #seasons_conditions=("1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0#1.0_1.0_0_0_1"  "1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0")
 
-fitness_measure=("speed_y" )
-seasons_conditions=("1.0_1.0_0_0_0")
+fitness_measure=("speed_y" "speed_y")
+seasons_conditions=("1.0_1.0_0_0_0" "1.0_1.0_0_0_1")
 
 #plastic_body=(0 0 0 0 1 1 0)
 #plastic_brain=(0 1 0 1 1 1 0)
 
-plastic_body=(0)
-plastic_brain=(0)
+plastic_body=(0 0)
+plastic_brain=(0 0)
 
 simulation_time=30
 runs=1
