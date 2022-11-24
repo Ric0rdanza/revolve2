@@ -31,10 +31,10 @@ class Simulator:
         self.study = 'plasticoding_cppntasks'
         # REMEMBER to also change order by down there!!!!
         #self.experiments_name = ["fullplasticforthright"]
-        self.experiments_name = ["onlyforth"]
+        self.experiments_name = ["tilted"]
         self.runs = [1]#list(range(1, 10+1))
-        self.generations = [10]
-        self.bests = 10
+        self.generations = [100]
+        self.bests = 5
         # 'all' selects best from all individuals
         # 'gens' selects best from chosen generations
         self.bests_type = 'gens'
@@ -136,6 +136,40 @@ class Simulator:
                 robot_rotation = x_rotation_degrees * np.pi / 180
                 platform = float(env_conditions[env_conditions_id][3])
 
+                if env_conditions[env_conditions_id][4] == "1":
+                    env.actors.append(
+                        PosedActor(
+                            actor,
+                            Vector3(
+                                [
+                                    0.6,
+                                    0.0,
+                                    0.3, # lower to prevent jumping
+                                    #(bounding_box.size.z / 2.0 - bounding_box.offset.z) + platform,
+                                ]
+                            ),
+                            Quaternion.from_eulers([robot_rotation, 0, 0]),
+                            [0.0 for _ in self._controller.get_dof_targets()],
+                        )
+                    )
+                elif env_conditions[env_conditions_id][4] == "0":
+                    env.actors.append(
+                        PosedActor(
+                            actor,
+                            Vector3(
+                                [
+                                    0.6,
+                                    0.0,
+                                    0.4,
+                                    #(bounding_box.size.z / 2.0 - bounding_box.offset.z) + platform,
+                                ]
+                            ),
+                            Quaternion.from_eulers([robot_rotation, 0, 0]),
+                            [0.0 for _ in self._controller.get_dof_targets()],
+                        )
+                    )
+
+                '''
                 env.actors.append(
                     PosedActor(
                         actor,
@@ -148,6 +182,7 @@ class Simulator:
                         [0.0 for _ in self._controller.get_dof_targets()],
                     )
                 )
+                '''
 
                 states = None
                 batch = Batch(

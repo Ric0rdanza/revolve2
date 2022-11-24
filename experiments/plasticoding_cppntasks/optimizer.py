@@ -325,7 +325,7 @@ class Optimizer(EAOptimizer[Genotype, float]):
                             [0.0 for _ in controller.get_dof_targets()],
                         )
                     )
-                else:
+                elif self._env_conditions[0][4] == "0":
                     env.actors.append(
                         PosedActor(
                             actor,

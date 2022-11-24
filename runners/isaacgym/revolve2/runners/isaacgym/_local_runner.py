@@ -123,14 +123,15 @@ class LocalRunner(Runner):
 
             # Rugged terrain
             if playground == "0":
-                heightfield[0:num_rows, :] = random_uniform_terrain(new_sub_terrain(), min_height=-0.01, max_height=0.01, step=0.15, downsampled_scale=0.1).height_field_raw
-            
+                heightfield[0:num_rows, :] = random_uniform_terrain(new_sub_terrain(), min_height=-0.01, max_height=0.01, step=0.1, downsampled_scale=0.1).height_field_raw
+                # step 0.15 -> 0.1
+
             elif playground == "1":
                 # Define the tilted terrain (modified from the sloped_terrain)
                 
                 # tilted terrain
-                heightfield[0: num_rows, :] = tilted_terrain(new_sub_terrain(), slope = 0.10).height_field_raw
-            
+                heightfield[0: num_rows, :] = tilted_terrain(new_sub_terrain(), slope = 0.15).height_field_raw
+                # slope 0.10 -> 0.15
             elif playground == "3":
                 def mix_sub_terrain(): return SubTerrain(width=num_rows, length=int(num_cols/6), vertical_scale=vertical_scale, horizontal_scale=horizontal_scale)
 
