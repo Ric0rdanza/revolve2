@@ -37,8 +37,8 @@ async def main() -> None:
     rng.seed(random())
 
     # database
-    database = open_async_database_sqlite(f'/home/chen/Documents/storage/{mainpath}/{args.study_name}/{args.experiment_name}/run_{args.run}')
-    #database = open_async_database_sqlite(f'/storage/{mainpath}/{args.study_name}/{args.experiment_name}/run_{args.run}')
+    #database = open_async_database_sqlite(f'/home/chen/Documents/storage/{mainpath}/{args.study_name}/{args.experiment_name}/run_{args.run}')
+    database = open_async_database_sqlite(f'/storage/{mainpath}/{args.study_name}/{args.experiment_name}/run_{args.run}')
 
     # process id generator
     process_id_gen = ProcessIdGen()

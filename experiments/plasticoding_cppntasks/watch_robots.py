@@ -34,7 +34,7 @@ class Simulator:
         self.experiments_name = ["tilted"]
         self.runs = [1]#list(range(1, 10+1))
         self.generations = [100]
-        self.bests = 5
+        self.bests = 10
         # 'all' selects best from all individuals
         # 'gens' selects best from chosen generations
         self.bests_type = 'gens'
