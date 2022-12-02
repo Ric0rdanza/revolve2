@@ -109,8 +109,15 @@ class Measure:
             #     if displacement_x < -1:
             #         displacement_x = -1
 
-            self._measures['speed_y'] = float((displacement_y/self._simulation_time)*100)
+            # Original:
+            #self._measures['speed_y'] = float((displacement_y/self._simulation_time)*100)
+            #self._measures['speed_x'] = float((displacement_x/self._simulation_time)*100)
+
+            # To stop the robot from moving sideways
+            # Simple solution: speed_y = original_speed_y - speed_x * constant e 
+            e = 0.5
             self._measures['speed_x'] = float((displacement_x/self._simulation_time)*100)
+            self._measures['speed_y'] = float((displacement_y/self._simulation_time)*100) - (abs(self._measures['speed_x'])) * e
 
         # average z
         z = 0

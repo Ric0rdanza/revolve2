@@ -31,10 +31,10 @@ class Simulator:
         self.study = 'plasticoding_cppntasks'
         # REMEMBER to also change order by down there!!!!
         #self.experiments_name = ["fullplasticforthright"]
-        self.experiments_name = ["tilted"]
+        self.experiments_name = ["tilted", "rugged"]
         self.runs = [1]#list(range(1, 10+1))
         self.generations = [100]
-        self.bests = 10
+        self.bests = 3
         # 'all' selects best from all individuals
         # 'gens' selects best from chosen generations
         self.bests_type = 'gens'

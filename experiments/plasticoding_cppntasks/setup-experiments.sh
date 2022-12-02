@@ -46,6 +46,7 @@ simulation_time=60
 runs=10
 
 num_terminals=2
+
 #mainpath="/home/chen/Documents/storage/ec22zhengtianshi"
 mainpath="/storage/ec22zhengtianshi"
 
