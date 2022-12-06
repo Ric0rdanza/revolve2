@@ -305,8 +305,12 @@ class Optimizer(EAOptimizer[Genotype, float]):
                 self._controllers.append(controller)
                 env = Environment()
 
+                # modify the direction of robot when spawning them
                 x_rotation_degrees = float(self.env_conditions[cond][2])
-                robot_rotation = x_rotation_degrees * np.pi / 180
+                # Original
+                # robot_rotation = x_rotation_degrees * np.pi / 180
+                # Make sure every robot facing y_axis when spawning
+                robot_rotation = 90 * np.pi / 180
                 platform = float(self.env_conditions[cond][3])
 
                 if self._env_conditions[0][4] == "1":
