@@ -92,6 +92,7 @@ class Measure:
             print('suspicious displacement gets minus inf')
             self._measures['speed_y'] = -math.inf
             self._measures['speed_x'] = -math.inf
+            self._measures['fitness'] = -math.inf
         else:
             # speed on the y-axis (to the right [uphill] is higher/better)
             displacement_y = float((end_state.position[1]-begin_state.position[1]))
@@ -114,16 +115,18 @@ class Measure:
             #self._measures['speed_x'] = float((displacement_x/self._simulation_time)*100)
 
             # To stop the robot from moving sideways
-            # Simple solution: speed_y = original_speed_y - speed_x * constant e
+            # Simple solution: speed_y = original_speed_y - speed_x * constant e v c
             if abs(displacement_z) > 1:
                 # discard the suicide robot.
+                print('suicide robot gets minus inf')
                 self._measures['speed_x'] = -math.inf
                 self._measures['speed_y'] = -math.inf
+                self._measures['fitness'] = -math.inf
             else:
                 # discourage the movements on x-axis
-                e = 0.5
                 self._measures['speed_x'] = float((displacement_x/self._simulation_time)*100)
-                self._measures['speed_y'] = float((displacement_y/self._simulation_time)*100) - (abs(self._measures['speed_x'])) * e
+                self._measures['speed_y'] = float((displacement_y/self._simulation_time)*100)
+                self._measures['fitness'] = pow(self._measures['speed_y'], 2) - pow(self._measures['speed_x'], 2) 
 
         # average z
         z = 0
