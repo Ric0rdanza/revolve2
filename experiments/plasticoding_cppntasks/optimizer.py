@@ -304,13 +304,8 @@ class Optimizer(EAOptimizer[Genotype, float]):
                 bounding_box = actor.calc_aabb()
                 self._controllers.append(controller)
                 env = Environment()
-
-                # modify the direction of robot when spawning them
                 x_rotation_degrees = float(self.env_conditions[cond][2])
-                # Original
-                # robot_rotation = x_rotation_degrees * np.pi / 180
-                # Make sure every robot facing y_axis when spawning
-                robot_rotation = 90 * np.pi / 180
+                robot_rotation = x_rotation_degrees * np.pi / 180
                 platform = float(self.env_conditions[cond][3])
 
                 if self._env_conditions[0][4] == "1":
@@ -337,7 +332,7 @@ class Optimizer(EAOptimizer[Genotype, float]):
                                 [
                                     0.6,
                                     0.0,
-                                    0.4,
+                                    0.2,
                                     #(bounding_box.size.z / 2.0 - bounding_box.offset.z) + platform,
                                 ]
                             ),
