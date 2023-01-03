@@ -32,8 +32,8 @@ class Simulator:
         # REMEMBER to also change order by down there!!!!
         #self.experiments_name = ["fullplasticforthright"]
         self.experiments_name = ["rugged", "tilted"]
-        self.runs = [3]#list(range(1, 10+1))
-        self.generations = [100]
+        self.runs = [8]#list(range(1, 10+1))
+        self.generations = [200]
         self.bests = 3
         # 'all' selects best from all individuals
         # 'gens' selects best from chosen generations

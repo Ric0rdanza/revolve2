@@ -15,9 +15,9 @@ study="plasticoding_cppntasks"
 #population_size=(200 200 200 200 200 200 100)
 #offspring_size=(200 200 200 200 200 200 100)
 
-experiments=("rugged" "tilted")
-population_size=(100 100)
-offspring_size=(100 100)
+experiments=("rugged" "tilted" "flat")
+population_size=(150 150 150)
+offspring_size=(150 150 150)
 
 #experiments=("rugged" "tilted" "mixed")
 #population_size=(100 100 100)
@@ -30,8 +30,8 @@ num_generations="100"
 #fitness_measure=("forthright_dominated" "forthright_dominated" "backforth_dominated" "backforth_dominated" "forthright_dominated" "backforth_dominated" "speed_y" )
 #seasons_conditions=("1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0#1.0_1.0_0_0_1"  "1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0#1.0_1.0_0_0_1" "1.0_1.0_0_0_0")
 
-fitness_measure=("fitness" "fitness")
-seasons_conditions=("1.0_1.0_0_0_0" "1.0_1.0_0_0_1")
+fitness_measure=("fitness" "fitness" "fitness")
+seasons_conditions=("1.0_1.0_0_0_0" "1.0_1.0_0_0_1" "1.0_1.0_0_0_2")
 
 #fitness_measure=("speed_y" "speed_y" "speed_y")
 #seasons_conditions=("1.0_1.0_0_0_0" "1.0_1.0_0_0_1" "1.0_1.0_0_0_3")
@@ -39,16 +39,16 @@ seasons_conditions=("1.0_1.0_0_0_0" "1.0_1.0_0_0_1")
 #plastic_body=(0 0 0 0 1 1 0)
 #plastic_brain=(0 1 0 1 1 1 0)
 
-plastic_body=(0 0)
-plastic_brain=(0 0)
+plastic_body=(0 0 0)
+plastic_brain=(0 0 0)
 
 simulation_time=60
 runs=10
 
 num_terminals=5
 
-#mainpath="/home/chen/Documents/storage/ec22zhengtianshi"
-mainpath="/storage/ec22zhengtianshi"
+mainpath="/home/chen/Documents/storage/ec22zhengtianshi"
+#mainpath="/storage/ec22zhengtianshi"
 
 mkdir ${mainpath}/${study}
 mkdir ${mainpath}/${study}/analysis
@@ -148,7 +148,7 @@ while true
         idx=$( echo ${experiments[@]/${exp}//} | cut -d/ -f1 | wc -w | tr -d ' ' )
 
         # nice -n19 python3  experiments/${study}/optimize.py
-        screen -d -m -S screen_${free_screens[$p]}_${to_d} -L -Logfile /storage/ec22zhengtianshi/${study}/${exp}_${run}".log" python3  experiments/${study}/optimize.py \
+        screen -d -m -S screen_${free_screens[$p]}_${to_d} -L -Logfile /home/chen/Documents/storage/ec22zhengtianshi/${study}/${exp}_${run}".log" python3  experiments/${study}/optimize.py \
                --experiment_name ${exp}  --study=${study}  --seasons_conditions ${seasons_conditions[$idx]} --run ${run} --fitness_measure ${fitness_measure[$idx]} \
                --plastic_body ${plastic_body[$idx]} --plastic_brain ${plastic_brain[$idx]} --num_generations ${num_generations} \
                --offspring_size ${offspring_size[$idx]} --population_size ${population_size[$idx]} --simulation_time ${simulation_time};

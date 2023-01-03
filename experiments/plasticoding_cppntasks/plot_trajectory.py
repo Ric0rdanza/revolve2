@@ -16,21 +16,21 @@ from sqlalchemy.future import select
 from revolve2.core.optimization.ea.generic_ea import DbEnvconditions
 from ast import literal_eval
 
-parser = argparse.ArgumentParser()
-parser.add_argument("study")
-parser.add_argument("experiments")
-parser.add_argument("runs")
-parser.add_argument("final_gen")
-parser.add_argument("comparison")
-parser.add_argument("mainpath")
-args = parser.parse_args()
+#parser = argparse.ArgumentParser()
+#parser.add_argument("study")
+#parser.add_argument("experiments")
+#parser.add_argument("runs")
+#parser.add_argument("final_gen")
+#parser.add_argument("comparison")
+#parser.add_argument("mainpath")
+#args = parser.parse_args()
 
-study = args.study
-experiments_name = args.experiments.split(',')
-runs = list(range(1, int(args.runs) + 1))
-final_gen = int(args.final_gen)
-comparison = args.comparison
-mainpath = args.mainpath
+study = "plasticoding_cppntasks"
+experiments_name = ["tilted", "rugged"]
+runs = list(range(1, 8 + 1))
+final_gen = 200
+#comparison = args.comparison
+mainpath = "ec22zhengtianshi"
 bests = 1
 env_conditions = 2
 
@@ -57,7 +57,7 @@ async def main() -> None:
         ax.invert_yaxis()
 
         for run in runs:
-            db = open_async_database_sqlite(f'/storage/{mainpath}/{study}/{exp}/run_{run}')
+            db = open_async_database_sqlite(f'/home/chen/Documents/storage/{mainpath}/{study}/{exp}/run_{run}')
 
             async with AsyncSession(db) as session:
                 query = select(DbEAOptimizerGeneration, DbEAOptimizerIndividual, DbStates) \
@@ -97,7 +97,7 @@ async def main() -> None:
                     # x and y are intentionally inverted, because of isaacs visuals
                     ax.plot(positions['y'], positions['x'], alpha=0.7,  label=f'...', c=clrs[cond-1])
 
-        plt.savefig(f'/storage/{mainpath}/{study}/analysis/traj_{exp}.png')
+        plt.savefig(f'/home/chen/Documents/storage/{mainpath}/{study}/analysis/traj_{exp}.png')
         plt.clf()
         plt.close(fig)
 

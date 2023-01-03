@@ -127,8 +127,9 @@ class Measure:
                 self._measures['speed_x'] = float((displacement_x/self._simulation_time)*100)
                 self._measures['speed_y'] = float((displacement_y/self._simulation_time)*100)
                 factor_x = 0
-                if abs(self._measures['speed_x']) > 1:
-                    factor_x = abs(self._measures['speed_x']) - 1
+                if abs(self._measures['speed_x']) > 1.5:
+                    print('high speed_x detected, penalized.')
+                    factor_x = abs(self._measures['speed_x']) - 1.5
                 self._measures['fitness'] = self._measures['speed_y'] + pow(self._measures['speed_y'], 2) - factor_x
 
         # average z

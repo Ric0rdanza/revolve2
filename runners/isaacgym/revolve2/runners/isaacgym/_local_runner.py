@@ -132,6 +132,10 @@ class LocalRunner(Runner):
                 # tilted terrain
                 heightfield[0: num_rows, :] = tilted_terrain(new_sub_terrain(), slope = 0.05).height_field_raw
                 # slope 0.10 -> 0.15
+            elif playground == "2":
+                # flat terrain
+                heightfield[0: num_rows, :] = tilted_terrain(new_sub_terrain(), slope = 0.0).height_field_raw
+
             elif playground == "3":
                 def mix_sub_terrain(): return SubTerrain(width=num_rows, length=int(num_cols/6), vertical_scale=vertical_scale, horizontal_scale=horizontal_scale)
 

@@ -340,6 +340,22 @@ class Optimizer(EAOptimizer[Genotype, float]):
                             [0.0 for _ in controller.get_dof_targets()],
                         )
                     )
+                elif self._env_conditions[0][4] == "2":
+                    env.actors.append(
+                        PosedActor(
+                            actor,
+                            Vector3(
+                                [
+                                    0.6,
+                                    0.0,
+                                    0.0,
+                                    #(bounding_box.size.z / 2.0 - bounding_box.offset.z) + platform,
+                                ]
+                            ),
+                            Quaternion.from_eulers([robot_rotation, 0, 0]),
+                            [0.0 for _ in controller.get_dof_targets()],
+                        )
+                    )
                 batch.environments.append(env)
 
             envs_queried_substrates[cond] = queried_substrates
